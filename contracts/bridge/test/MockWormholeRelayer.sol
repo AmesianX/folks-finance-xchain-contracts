@@ -1,8 +1,7 @@
 // SPDX-License-Identifier: BUSL-1.1
 pragma solidity 0.8.23;
 
-import "@wormhole-solidity-sdk/interfaces/IWormholeReceiver.sol";
-import "@wormhole-solidity-sdk/interfaces/IWormholeRelayer.sol";
+import "wormhole-sdk/interfaces/IWormholeRelayer.sol";
 
 contract MockWormholeRelayer is IWormholeRelayer {
     event WormholeSendVaaKey(

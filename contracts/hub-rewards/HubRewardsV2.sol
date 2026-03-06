@@ -313,9 +313,9 @@ contract HubRewardsV2 is AccessControlDefaultAdminRules, BridgeMessenger {
             uint256 gasLimit = payload.data.toUint256(index);
             index += 32;
 
-            bytes32 accountId = payload.accountId; // avoid stack too deep error
             uint16 chainId = rewardTokens[rewardTokenId].chainId;
             bytes32 spokeAddress = rewardTokens[rewardTokenId].spokeAddress;
+            bytes32 accountId = payload.accountId; // avoid stack too deep error
             bytes32 recipient = accountManager.getAddressRegisteredToAccountOnChain(accountId, chainId);
             uint256 amount = accountUnclaimedRewards[accountId][rewardTokenId];
 

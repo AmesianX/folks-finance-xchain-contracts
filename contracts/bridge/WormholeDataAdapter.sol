@@ -2,9 +2,8 @@
 pragma solidity 0.8.23;
 
 import "@openzeppelin/contracts/access/extensions/AccessControlDefaultAdminRules.sol";
-import "@wormhole-solidity-sdk/interfaces/IWormhole.sol";
-import "@wormhole-solidity-sdk/interfaces/IWormholeReceiver.sol";
-import "@wormhole-solidity-sdk/interfaces/IWormholeRelayer.sol";
+import "wormhole-sdk/interfaces/ICoreBridge.sol";
+import "wormhole-sdk/interfaces/IWormholeRelayer.sol";
 
 import "./interfaces/IBridgeAdapter.sol";
 import "./interfaces/IBridgeRouter.sol";
@@ -27,7 +26,7 @@ contract WormholeDataAdapter is IBridgeAdapter, IWormholeReceiver, AccessControl
     mapping(uint16 folksChainId => WormholeAdapterParams) internal folksChainIdToWormholeAdapter;
     mapping(uint16 wormholeChainId => uint16 folksChainId) internal wormholeChainIdToFolksChainId;
 
-    IWormhole public immutable wormhole;
+    ICoreBridge public immutable wormhole;
     IWormholeRelayer public immutable wormholeRelayer;
     IBridgeRouter public immutable bridgeRouter;
     address public refundAddress;
@@ -52,7 +51,7 @@ contract WormholeDataAdapter is IBridgeAdapter, IWormholeReceiver, AccessControl
      */
     constructor(
         address admin,
-        IWormhole _wormhole,
+        ICoreBridge _wormhole,
         IWormholeRelayer _wormholeRelayer,
         IBridgeRouter _bridgeRouter,
         address _refundAddress

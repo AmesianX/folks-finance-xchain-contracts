@@ -2,13 +2,12 @@
 pragma solidity 0.8.23;
 
 import "@openzeppelin/contracts/access/extensions/AccessControlDefaultAdminRules.sol";
-import "@wormhole-solidity-sdk/interfaces/IERC20.sol";
-import "@wormhole-solidity-sdk/interfaces/IWormhole.sol";
-import "@wormhole-solidity-sdk/interfaces/IWormholeReceiver.sol";
-import "@wormhole-solidity-sdk/interfaces/IWormholeRelayer.sol";
-import "@wormhole-solidity-sdk/interfaces/CCTPInterfaces/ITokenMessenger.sol";
-import "@wormhole-solidity-sdk/interfaces/CCTPInterfaces/IMessageTransmitter.sol";
-import { CCTPMessageLib } from "@wormhole-solidity-sdk/CCTPBase.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "wormhole-sdk/interfaces/ICoreBridge.sol";
+import "wormhole-sdk/interfaces/IWormholeRelayer.sol";
+import "wormhole-sdk/interfaces/cctp/ITokenMessenger.sol";
+import "wormhole-sdk/interfaces/cctp/IMessageTransmitter.sol";
+import "wormhole-sdk/WormholeRelayer/Keys.sol";
 
 import "./interfaces/IBridgeAdapter.sol";
 import "./interfaces/IBridgeRouter.sol";
@@ -38,7 +37,7 @@ contract WormholeCCTPAdapter is IBridgeAdapter, IWormholeReceiver, AccessControl
     mapping(uint16 folksChainId => WormholeCCTPAdapterParams) internal folksChainIdToWormholeAdapter;
     mapping(uint16 wormholeChainId => uint16 folksChainId) internal wormholeChainIdToFolksChainId;
 
-    IWormhole public immutable wormhole;
+    ICoreBridge public immutable wormhole;
     IWormholeRelayer public immutable wormholeRelayer;
     IBridgeRouter public immutable bridgeRouter;
     ITokenMessenger public immutable circleTokenMessenger;
@@ -71,7 +70,7 @@ contract WormholeCCTPAdapter is IBridgeAdapter, IWormholeReceiver, AccessControl
      */
     constructor(
         address admin,
-        IWormhole _wormhole,
+        ICoreBridge _wormhole,
         IWormholeRelayer _wormholeRelayer,
         IBridgeRouter _bridgeRouter,
         IMessageTransmitter _circleMessageTransmitter,
@@ -270,7 +269,7 @@ contract WormholeCCTPAdapter is IBridgeAdapter, IWormholeReceiver, AccessControl
 
         // return info so can pair Circle Token transfer with Wormhole message
         MessageKey[] memory messageKeys = new MessageKey[](1);
-        messageKeys[0] = MessageKey(CCTPMessageLib.CCTP_KEY_TYPE, abi.encodePacked(cctpSourceDomainId, nonce));
+        messageKeys[0] = MessageKey(WormholeRelayerKeysLib.KEY_TYPE_CCTP, abi.encodePacked(cctpSourceDomainId, nonce));
         return (messageKeys, nonce);
     }
 

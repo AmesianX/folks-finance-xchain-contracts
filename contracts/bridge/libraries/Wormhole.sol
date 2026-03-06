@@ -2,7 +2,7 @@
 pragma solidity 0.8.23;
 
 library Wormhole {
-    uint8 internal constant CONSISTENCY_LEVEL_FINALIZED = 15;
+    uint8 internal constant CONSISTENCY_LEVEL_FINALIZED = 1;
     uint8 internal constant CONSISTENCY_LEVEL_INSTANT = 200;
 
     function getConsistencyLevel(uint64 finalityLevel) internal pure returns (uint8) {
